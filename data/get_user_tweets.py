@@ -23,7 +23,7 @@ def read_twitter_cred(filename):
     return info
 
 
-def get_all_tweets(screen_name, info):
+def get_all_tweets(username, info):
     consumer_key = info["consumer_key"]
     consumer_secret = info["consumer_secret"]
     access_key = info["access_key"]
@@ -37,53 +37,25 @@ def get_all_tweets(screen_name, info):
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
 
-    # initialization of a list to hold all Tweets
+    number_of_tweets = 3200
 
-    all_the_tweets = []
+    tweets_for_csv = []
 
-    # We will get the tweets with multiple requests of 200 tweets each
-    new_tweets = api.user_timeline(screen_name=screen_name, count=200)
-
-    for tweet in new_tweets:
+    for tweet in tweepy.Cursor(api.user_timeline, screen_name=username, include_rts=False).items(number_of_tweets):
+        tweets_for_csv.append([username, tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")])
         print(tweet.text)
-    # saving the most recent tweets
+        print(tweet.created_at)
 
-    all_the_tweets.extend(new_tweets)
+    return tweets_for_csv
 
-    # save id of 1 less than the oldest tweet
 
-    oldest_tweet = all_the_tweets[-1].id - 1
-
-    # grabbing tweets till none are left
-
-    new_tweets = api.user_timeline(screen_name=screen_name, max_id=oldest_tweet)
-    """ 
-    while len(new_tweets) < 1000:
-        # The max_id param will be used subsequently to prevent duplicates
-
-        new_tweets = api.user_timeline(screen_name=screen_name, max_id=oldest_tweet)
-        print(new_tweets)
-    """
-    # save most recent tweets
-
-    all_the_tweets.extend(new_tweets)
-
-    # id is updated to oldest tweet - 1 to keep track
-
-    oldest_tweet = all_the_tweets[-1].id - 1
-    print('...%s tweets have been downloaded so far' % len(all_the_tweets))
-
-    # transforming the tweets into a 2D array that will be used to populate the csv
-
-    outtweets = [[tweet.id_str, tweet.created_at,
-                  tweet.text.encode('utf-8')] for tweet in all_the_tweets]
-
-    # writing to the csv file
-
-    with open(screen_name + '_tweets.csv', 'w', encoding='utf8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['id', 'created_at', 'text'])
-        writer.writerows(outtweets)
+def write_tweets_csv(filename, tweets):
+    try:
+        with open(filename, "w") as outfile:
+            writer = csv.writer(outfile, delimiter=",")
+            writer.writerows(tweets)
+    except Exception as e:
+        print("Exception Raised-", str(e))
 
 
 if __name__ == "__main__":
@@ -95,4 +67,6 @@ if __name__ == "__main__":
     json_filename = "twitter_credentials.json"
     save_twitter_cred(json_filename, twitter_cred)
     info = read_twitter_cred(json_filename)
-    get_all_tweets("cambrasine", info)
+    username = "cambrasine"
+    tweets = get_all_tweets(username, info)
+    write_tweets_csv(username + "_tweets.csv", tweets)
