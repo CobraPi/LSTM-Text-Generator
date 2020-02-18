@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # !!! # Crawl responsibly by identifying yourself (and your website/e-mail) on the user-agent
-USER_AGENT = 'TweetScraper'
+USER_AGENT = 'https://github.com/CobraPi/jorduna@su.suffolk.edu'
 
 # settings for spiders
 BOT_NAME = 'TweetScraper'
