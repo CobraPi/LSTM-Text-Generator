@@ -1,4 +1,6 @@
 import numpy as np
+import sys
+import csv
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
@@ -52,9 +54,30 @@ model.add(LSTM(256, input_shape=(x.shape[1], x.shape[2])))
 model.add(Dropout(0.2))
 model.add(Dense(y.shape[1], activation="softmax"))
 # load the network weights
-filename = "" # weights-iomporvement file with lowest loss value
+filename = "weights-imporvement-03--2.7038.hdf5" # weights-iomporvement file with lowest loss value
 model.load_weights(filename)
-model.compile(loss="categorical_crossentrophy", optimizer="adam")
+model.compile(loss="categorical_crossentropy", optimizer="adam")
 
 # create mapping of unique characters to integers
 int_to_char = dict((i, c) for i, c in enumerate(chars))
+
+# pick a random seed
+start = np.random.randint(0, len(dataX) - 1)
+pattern = dataX[start]
+print("Seed:",  "".join([int_to_char[value] for value in pattern]))
+
+sys.stdout.flush()
+
+while True:
+    # generage characters
+    for i in range(1000):
+        x = np.reshape(pattern, (1, len(pattern), 1))
+        x = x / float(n_vocab)
+        prediction = model.predict(x, verbose=0)
+        index = np.argmax(prediction)
+        result = int_to_char[index]
+        seq_in = [int_to_char[value] for value in pattern]
+        sys.stdout.write(result)
+        pattern.append(index)
+        pattern = pattern[1:len(pattern)]
+        sys.stdout.flush()
