@@ -8,6 +8,7 @@ import os
 import codecs
 import random
 
+
 class TwitterBot:
 
     def __init__(self, sequence_length=10, min_word_frequency=20, step=1, batch_size=32, epochs=100):
@@ -38,8 +39,8 @@ class TwitterBot:
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
 
         self.ignore_words = False
-        self.min_words = 100
-        self.max_words = 300
+        self.min_words = 10
+        self.max_words = 45
 
     def set_outpufile(self, outputfilepath):
         try:
@@ -112,9 +113,9 @@ class TwitterBot:
             div_string = "----- Diversity:" + str(diversity) + "\n"
             seed_string = '----- Generating with seed:\n"' + ' '.join(sentence) + '"\n'
             text_string = " ".join(sentence)
-            print(div_string)
-            print(seed_string)
-            print(text_string)
+            print(div_string, end="")
+            print(seed_string, end="")
+            print(text_string, end="")
             self.outputfile.write(div_string)
             self.outputfile.write(seed_string)
             self.outputfile.write(text_string)
@@ -129,7 +130,7 @@ class TwitterBot:
                 sentence = sentence[1:]
                 sentence.append(next_word)
                 n_word = " " + next_word
-                print(n_word)
+                print(n_word, end="")
                 self.outputfile.write(n_word)
             print("")
             self.outputfile.write("\n")
@@ -203,7 +204,7 @@ class TwitterBot:
                     self.next_words.append(self.text_in_words[i + self.sequence_length])
             print("Ignored sequences:", ignored)
             print("Remaining sequences:", len(self.sentences))
-        else:ter
+        else:
             self.vocabulary = sorted(set(self.vocabulary))
             self.word_indices = dict((c, i) for i, c in enumerate(self.vocabulary))
             self.indices_word = dict((i, c) for i, c in enumerate(self.vocabulary))
