@@ -1,4 +1,5 @@
-data/
+data/test/
+data/tweet_complete/
 checkpoints/
 examples/
 archive/
