@@ -12,8 +12,8 @@ def print_menu():
 def run_model(name):
     bot = TwitterBot()
     bot.read_corpus_file("data/" + name + ".txt")
-    bot.set_outpufile("generated_text/" + name + ".txt")
-    bot.load_saved_model("models/LSTM_MODEL-epoch047-words60957-sequence10-minfreq20-loss0.8391-acc0.8813-val_loss12.8418-val_acc0.0355")
+    #bot.set_outpufile("generated_text/" + name + ".txt")
+    bot.load_saved_model("models/Cambrasine_double_layer.h5")
     user_input = 1
     while int(user_input) != 0:
         print_menu()

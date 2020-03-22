@@ -143,7 +143,6 @@ class TwitterBot:
         seed_index = np.random.randint(len(self.sentences + self.sentences_test))
         if not user_seed:
             self.seed = (self.sentences + self.sentences_test)[seed_index]
-            print(self.seed)
         else:
             self.seed = seed.split(" ")
         for diversity in self.diversity_list:
@@ -154,13 +153,13 @@ class TwitterBot:
             print(div_string, end="")
             print(seed_string, end="")
             print(text_string, end="")
-            self.outputfile.write(div_string)
-            self.outputfile.write(seed_string)
-            self.outputfile.write(text_string)
+            if self.outputfile is not None:
+                self.outputfile.write(div_string)
+                self.outputfile.write(seed_string)
+                self.outputfile.write(text_string)
             self.n_words = random.randrange(self.min_words, self.max_words)
             for i in range(self.n_words):
                 x_pred = np.zeros((1, self.sequence_length, len(self.vocabulary)))
-                x_pred.reshape(10, 60957)
                 for t, word in enumerate(sentence):
                     x_pred[0, t, self.word_indices[word]] = 1.
                 preds = self.model.predict(x_pred, verbose=0)[0]
@@ -169,14 +168,17 @@ class TwitterBot:
                 sentence = sentence[1:]
                 sentence.append(next_word)
                 n_word = " " + next_word
-                print(n_word)
-                self.outputfile.write(n_word)
+                print(n_word, end="")
+                if self.outputfile is not None:
+                    self.outputfile.write(n_word)
             print("")
-            self.outputfile.write("\n")
+            if self.outputfile is not None:
+                self.outputfile.write("\n")
         line = "=" * 80 + "\n"
         print(line, end="")
-        self.outputfile.write(line)
-        self.outputfile.flush()
+        if self.outputfile is not None:
+            self.outputfile.write(line)
+            self.outputfile.flush()
 
     def read_corpus(self, corpus):
         self.corpus = corpus

@@ -45,7 +45,7 @@ def train_existing_cambrasine_model(filepath):
     bot.load_saved_model(filepath)
     print("Training model:", filepath)
     bot.train()
-    bot.save_model("models/Cambrasine_double_layer.h5")
+    bot.save_model("models/Cambrasine_double_layer_double_trained.h5")
 
 
 def print_menu():
@@ -78,5 +78,5 @@ def run_cambrasine():
 
 
 if __name__ == "__main__":
-    train_new_cambrasine_model()
-    #train_existing_cambrasine_model("models/Cambrasine_double_layer.h5")
+    #train_new_cambrasine_model()
+    train_existing_cambrasine_model("models/Cambrasine_double_layer.h5")
