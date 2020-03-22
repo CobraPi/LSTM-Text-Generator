@@ -139,6 +139,19 @@ class TwitterBot:
         self.outputfile.write(line)
         self.outputfile.flush()
 
+    def seed_in_vocabulary(self, seed):
+        tokens = seed.split(" ")
+        verified = True
+        print("\n", end="")
+        for word in tokens:
+            if word not in self.vocabulary:
+                print("'" + word + "'", "is NOT in vocabulary")
+                verified = False
+            else:
+                print("'" + word + "'", "is in vocabulary")
+        print("\n", end="")
+        return verified
+
     def generate_text(self, seed="", user_seed=False):
         seed_index = np.random.randint(len(self.sentences + self.sentences_test))
         if not user_seed:

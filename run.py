@@ -13,7 +13,7 @@ def run_model(name):
     bot = TwitterBot()
     bot.read_corpus_file("data/" + name + ".txt")
     #bot.set_outpufile("generated_text/" + name + ".txt")
-    bot.load_saved_model("models/Cambrasine_double_layer.h5")
+    bot.load_saved_model("models/LSTM_MODEL-epoch100-words60958-sequence10-minfreq20-loss0.7329-acc0.9189-val_loss13.2298-val_acc0.0319")
     user_input = 1
     while int(user_input) != 0:
         print_menu()
@@ -21,13 +21,17 @@ def run_model(name):
         if int(user_input) == 1:
             bot.generate_text()
         elif int(user_input) == 2:
-            seed = input("Please enter a seed sentence: ")
+            seed_verified = False
+            while not seed_verified:
+                seed = input("Please enter a seed sentence: ")
+                seed_verified = bot.seed_in_vocabulary(seed)
+                if not seed_verified:
+                    print("Not all words in seed are in vocabulary. Please try again.")
             bot.generate_text(seed, True)
         elif int(user_input) == 0:
             break
         else:
             print("Invalid input, please try again")
-    bot.outputfile.close()
 
 if __name__ == "__main__":
     run_model("cambrasine_tweets")
