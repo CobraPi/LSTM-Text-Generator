@@ -6,7 +6,6 @@ import sys
 import io
 import os
 import codecs
-import random
 
 
 class TwitterBot:
@@ -98,43 +97,49 @@ class TwitterBot:
 
     def sample(self, preds, temperature=1.0):
         preds = np.asarray(preds).astype("float64")
-        preds = np.log(preds) / temperature
+        preds = np.log(preds.clip(min=0.000000000000000000000000000000000000000000000000000000000000001)) / temperature
         exp_preds = np.exp(preds)
         preds = exp_preds / np.sum(exp_preds)
         probabs = np.random.multinomial(1, preds, 1)
         return np.argmax(probabs)
 
-    def on_epoch_end(self, epoch, logs):
-        self.outputfile.write("\n----- Generating text after Epoch: %d\n" % epoch)
-        seed_index = np.random.randint(len(self.sentences + self.sentences_test))
-        seed = (self.sentences + self.sentences_test)[seed_index]
-        for diversity in self.diversity_list:
-            sentence = seed
-            div_string = "----- Diversity:" + str(diversity) + "\n"
-            seed_string = '----- Generating with seed:\n"' + ' '.join(sentence) + '"\n'
-            text_string = " ".join(sentence)
-            print(div_string, end="")
-            print(seed_string, end="")
-            print(text_string, end="")
+    def generate_text(self, diversity):
+        sentence = self.seed
+        div_string = "----- Diversity:" + str(diversity) + "\n"
+        seed_string = '----- Generating with seed: "' + ' '.join(sentence) + '"\n'
+        text_string = "\n" + " ".join(sentence)
+        print(div_string, end="")
+        print(seed_string, end="")
+        print(text_string, end="")
+        if self.outputfile is not None:
             self.outputfile.write(div_string)
             self.outputfile.write(seed_string)
             self.outputfile.write(text_string)
-            self.n_words = random.randrange(self.min_words, self.max_words)
-            for i in range(self.n_words):
-                x_pred = np.zeros((1, self.sequence_length, len(self.vocabulary)))
-                for t, word in enumerate(sentence):
-                    x_pred[0, t, self.word_indices[word]] = 1.
-                preds = self.model.predict(x_pred, verbose=0)[0]
-                next_index = self.sample(preds, diversity)
-                next_word = self.indices_word[next_index]
-                sentence = sentence[1:]
-                sentence.append(next_word)
-                n_word = " " + next_word
-                print(n_word, end="")
+        self.n_words = np.random.random_integers(self.min_words, self.max_words)
+        for i in range(self.n_words):
+            x_pred = np.zeros((1, self.sequence_length, len(self.vocabulary)))
+            for t, word in enumerate(sentence):
+                x_pred[0, t, self.word_indices[word]] = 1.
+            preds = self.model.predict(x_pred, verbose=0)[0]
+            next_index = self.sample(preds, diversity)
+            next_word = self.indices_word[next_index]
+            sentence = sentence[1:]
+            sentence.append(next_word)
+            n_word = " " + next_word
+            print(n_word, end="")
+            if self.outputfile is not None:
                 self.outputfile.write(n_word)
-            print("")
+        print("")
+        if self.outputfile is not None:
             self.outputfile.write("\n")
-        line = "=" * 80 + "\n"
+
+    def on_epoch_end(self, epoch, logs):
+        self.outputfile.write("\n----- Generating text after Epoch: %d\n" % epoch)
+        seed_index = np.random.randint(len(self.sentences + self.sentences_test))
+        self.seed = (self.sentences + self.sentences_test)[seed_index]
+        for diversity in self.diversity_list:
+            self.generate_text(diversity)
+        line = "\n" + "=" * 80 + "\n"
         print(line, end="")
         self.outputfile.write(line)
         self.outputfile.flush()
@@ -152,42 +157,15 @@ class TwitterBot:
         print("\n", end="")
         return verified
 
-    def generate_text(self, seed="", user_seed=False):
+    def generate_text_on_run(self, seed="", user_seed=False):
         seed_index = np.random.randint(len(self.sentences + self.sentences_test))
         if not user_seed:
             self.seed = (self.sentences + self.sentences_test)[seed_index]
         else:
             self.seed = seed.split(" ")
-        for diversity in self.diversity_list:
-            sentence = self.seed
-            div_string = "----- Diversity:" + str(diversity) + "\n"
-            seed_string = '----- Generating with seed:\n"' + ' '.join(sentence) + '"\n'
-            text_string = " ".join(sentence)
-            print(div_string, end="")
-            print(seed_string, end="")
-            print(text_string, end="")
-            if self.outputfile is not None:
-                self.outputfile.write(div_string)
-                self.outputfile.write(seed_string)
-                self.outputfile.write(text_string)
-            self.n_words = random.randrange(self.min_words, self.max_words)
-            for i in range(self.n_words):
-                x_pred = np.zeros((1, self.sequence_length, len(self.vocabulary)))
-                for t, word in enumerate(sentence):
-                    x_pred[0, t, self.word_indices[word]] = 1.
-                preds = self.model.predict(x_pred, verbose=0)[0]
-                next_index = self.sample(preds, diversity)
-                next_word = self.indices_word[next_index]
-                sentence = sentence[1:]
-                sentence.append(next_word)
-                n_word = " " + next_word
-                print(n_word, end="")
-                if self.outputfile is not None:
-                    self.outputfile.write(n_word)
-            print("")
-            if self.outputfile is not None:
-                self.outputfile.write("\n")
-        line = "=" * 80 + "\n"
+        diversity = np.random.random_integers(10, 200, 1) * 0.01
+        self.generate_text(diversity)
+        line = "\n" + "=" * 80 + "\n"
         print(line, end="")
         if self.outputfile is not None:
             self.outputfile.write(line)

@@ -4,19 +4,18 @@ import json
 from datetime import datetime
 
 if __name__ == "__main__":
-    path = "tweet_complete/"
-    files = os.listdir(path=path)
-    data = []
-    print(files)
-    for file in files:
+    orig_path = "tweet_complete/"
+    orig_files = os.listdir(path=orig_path)
+    orig_data = []
+    for file in orig_files:
         try:
-            with open(path + file) as tweet:
-                data.append(json.load(tweet))
+            with open(orig_path + file) as tweet:
+                orig_data.append(json.load(tweet))
         except Exception as e:
             print("Exception Raised-", str(e))
     header = ["ID", "usernameTweet",  "datetime", "text", "url", "nbr_retweet", "nbr_favorite", "nbr_reply", "is_reply", "is_retweet", "user_id"]
     csv_rows = []
-    for item in data:
+    for item in orig_data:
         row = []
         print(item)
         for name in header:

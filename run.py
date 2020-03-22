@@ -19,7 +19,7 @@ def run_model(name):
         print_menu()
         user_input = input(">>> ")
         if int(user_input) == 1:
-            bot.generate_text()
+            bot.generate_text_on_run()
         elif int(user_input) == 2:
             seed_verified = False
             while not seed_verified:
@@ -27,7 +27,7 @@ def run_model(name):
                 seed_verified = bot.seed_in_vocabulary(seed)
                 if not seed_verified:
                     print("Not all words in seed are in vocabulary. Please try again.")
-            bot.generate_text(seed, True)
+            bot.generate_text_on_run(seed, True)
         elif int(user_input) == 0:
             break
         else:
