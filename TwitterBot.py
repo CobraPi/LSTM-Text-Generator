@@ -123,7 +123,7 @@ class TwitterBot:
             self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
         self.model.add(Activation("softmax"))
-        self.model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+        self.model.compile(loss="sparse-categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
         self.model.summary()
 
     def load_saved_model(self, filepath):
