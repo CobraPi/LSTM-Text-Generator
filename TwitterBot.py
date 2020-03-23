@@ -10,7 +10,7 @@ import codecs
 
 class TwitterBot:
 
-    def __init__(self, sequence_length=10, min_word_frequency=20, step=1, batch_size=32, epochs=100, embedding=False):
+    def __init__(self, sequence_length=30, model_layers=0, min_word_frequency=20, step=1, batch_size=32, epochs=100, embedding=False):
         self.inputfile = None
         self.outputfile = None
 
@@ -38,7 +38,7 @@ class TwitterBot:
         self.mem_cells = 512
         self.n_words = 0
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
-        self.model_layers = 0
+        self.model_layers = model_layers
 
         self.ignore_words = False
         self.min_words = 10
@@ -64,7 +64,7 @@ class TwitterBot:
         cut_index = int(len(sentences_original) * (1. - (percentage_test/100)))
         x_train, x_test = tmp_sentences[:cut_index], tmp_sentences[cut_index:]
         y_train, y_test = tmp_next_word[:cut_index], tmp_next_word[cut_index:]
-        print("Sise of training set = %d" % len(x_train))
+        print("Size of training set = %d" % len(x_train))
         print("Size of test set = %d" % len(y_test))
         return (x_train, y_train), (x_test, y_test)
 
@@ -90,9 +90,8 @@ class TwitterBot:
                 index += 1
             yield x, y
 
-    def build_model(self, model_layers):
+    def build_model(self):
         print("Building lstm model...")
-        self.model_layers = model_layers
         self.model = Sequential()
         if self.model_layers == 1:
             self.model.add(Bidirectional(LSTM(self.mem_cells), input_shape=(self.sequence_length, len(self.vocabulary))))
@@ -107,9 +106,8 @@ class TwitterBot:
         self.model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
         self.model.summary()
 
-    def build_embedding_model(self, model_layers):
+    def build_embedding_model(self):
         print("Building lstm embedding model...")
-        self.model_layers = model_layers
         self.model = Sequential()
         if self.model_layers == 1:
             self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
@@ -123,7 +121,7 @@ class TwitterBot:
             self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
         self.model.add(Activation("softmax"))
-        self.model.compile(loss="sparse-categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+        self.model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
         self.model.summary()
 
     def load_saved_model(self, filepath):
@@ -139,10 +137,9 @@ class TwitterBot:
         return np.argmax(probabs)
 
     def generate_text(self, diversity):
-        sentence = self.seed
         div_string = "----- Diversity:" + str(diversity) + "\n"
-        seed_string = '----- Generating with seed: "' + ' '.join(sentence) + '"\n'
-        text_string = "\n" + " ".join(sentence)
+        seed_string = '----- Generating with seed: "' + ' '.join(self.seed) + '"\n'
+        text_string = "\n" + " ".join(self.seed)
         print(div_string, end="")
         print(seed_string, end="")
         print(text_string, end="")
