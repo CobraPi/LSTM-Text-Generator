@@ -10,7 +10,7 @@ import codecs
 
 class TwitterBot:
 
-    def __init__(self, sequence_length=30, model_layers=0, min_word_frequency=20, step=1, batch_size=32, epochs=100, embedding=False):
+    def __init__(self, sequence_length=10, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=False):
         self.inputfile = None
         self.outputfile = None
 
@@ -64,7 +64,7 @@ class TwitterBot:
         cut_index = int(len(sentences_original) * (1. - (percentage_test/100)))
         x_train, x_test = tmp_sentences[:cut_index], tmp_sentences[cut_index:]
         y_train, y_test = tmp_next_word[:cut_index], tmp_next_word[cut_index:]
-        print("Size of training set = %d" % len(x_train))
+        print("Sise of training set = %d" % len(x_train))
         print("Size of test set = %d" % len(y_test))
         return (x_train, y_train), (x_test, y_test)
 
@@ -137,9 +137,10 @@ class TwitterBot:
         return np.argmax(probabs)
 
     def generate_text(self, diversity):
+        sentence = self.seed
         div_string = "----- Diversity:" + str(diversity) + "\n"
-        seed_string = '----- Generating with seed: "' + ' '.join(self.seed) + '"\n'
-        text_string = "\n" + " ".join(self.seed)
+        seed_string = '----- Generating with seed: "' + ' '.join(sentence) + '"\n'
+        text_string = "\n" + " ".join(sentence)
         print(div_string, end="")
         print(seed_string, end="")
         print(text_string, end="")
@@ -259,7 +260,7 @@ class TwitterBot:
             file_path = "./checkpoints/LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
                         "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
-        checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=False)
+        checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
         early_stopping = EarlyStopping(monitor="val_acc", patience=10)
         callbacks_list = [checkpoint, print_callback]#, early_stopping]
@@ -275,5 +276,3 @@ class TwitterBot:
         self.model.save(filename)
         if self.outputfile is not None:
             self.outputfile.close()
-
-
