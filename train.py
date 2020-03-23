@@ -4,10 +4,10 @@ from datetime import datetime
 
 def train_new_cambrasine_model():
     current_time = datetime.now()
-    bot = TwitterBot()
+    bot = TwitterBot(embedding=True)
     bot.read_corpus_file("data/cambrasine_tweets.txt")
     bot.set_outpufile("generated_text/generated_cambrasine_tweets(" + str(current_time) + ").txt")
-    bot.build_model(2)
+    bot.build_embedding_model(2)
     bot.train()
     bot.save_model("models/Cambrasine_double_layer.h5")
 

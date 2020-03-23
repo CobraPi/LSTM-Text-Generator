@@ -9,11 +9,11 @@ def print_menu():
     print("Enter 2 to generate text with a supplied seed")
 
 
-def run_model(name):
-    bot = TwitterBot()
-    bot.read_corpus_file("data/" + name + ".txt")
+def run_model(corpora, model):
+    bot = TwitterBot(embedding=True)
+    bot.read_corpus_file("data/" + corpora + ".txt")
     #bot.set_outpufile("generated_text/" + name + ".txt")
-    bot.load_saved_model("models/LSTM_MODEL-epoch100-words60958-sequence10-minfreq20-loss0.7329-acc0.9189-val_loss13.2298-val_acc0.0319")
+    bot.load_saved_model(model)
     user_input = 1
     while int(user_input) != 0:
         print_menu()
@@ -34,4 +34,4 @@ def run_model(name):
             print("Invalid input, please try again")
 
 if __name__ == "__main__":
-    run_model("cambrasine_tweets")
+    run_model("bible", "models/BIBLE_LSTM_MODEL_DOUBLE_LAYER.1613")

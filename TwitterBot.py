@@ -1,6 +1,6 @@
 from keras.callbacks import LambdaCallback, ModelCheckpoint, EarlyStopping
 from keras. models import Sequential, load_model
-from keras.layers import Dense, Dropout, Activation, LSTM, Bidirectional
+from keras.layers import Dense, Dropout, Activation, LSTM, Bidirectional, Embedding
 import numpy as np
 import sys
 import io
@@ -10,7 +10,7 @@ import codecs
 
 class TwitterBot:
 
-    def __init__(self, sequence_length=10, min_word_frequency=20, step=1, batch_size=32, epochs=100):
+    def __init__(self, sequence_length=10, min_word_frequency=20, step=1, batch_size=32, epochs=100, embedding=False):
         self.inputfile = None
         self.outputfile = None
 
@@ -32,8 +32,10 @@ class TwitterBot:
         self.batch_size = batch_size
         self.epochs = epochs
 
+        self.embedding = embedding
         self.model = None
         self.dropout = 0.2
+        self.mem_cells = 256
         self.n_words = 0
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
 
@@ -68,29 +70,58 @@ class TwitterBot:
     def generator(self, sentence_list, next_word_list):
         index = 0
         while True:
-            x = np.zeros((self.batch_size, self.sequence_length, len(self.vocabulary)), dtype=np.bool)
-            y = np.zeros((self.batch_size, len(self.vocabulary)), dtype=np.bool)
+            if self.embedding:
+                x = np.zeros((self.batch_size, self.sequence_length), dtype=np.int32)
+                y = np.zeros((self.batch_size), dtype=np.int32)
+            else:
+                x = np.zeros((self.batch_size, self.sequence_length, len(self.vocabulary)), dtype=np.bool)
+                y = np.zeros((self.batch_size, len(self.vocabulary)), dtype=np.bool)
             for i in range(self.batch_size):
                 for t, w in enumerate(sentence_list[index % len(sentence_list)]):
-                    x[i, t, self.word_indices[w]] = 1
-                y[i, self.word_indices[next_word_list[index % len(sentence_list)]]] = 1
+                    if self.embedding:
+                        x[i, t] = self.word_indices[w]
+                    else:
+                        x[i, t, self.word_indices[w]] = 1
+                if self.embedding:
+                    y[i] = self.word_indices[next_word_list[index % len(sentence_list)]]
+                else:
+                    y[i, self.word_indices[next_word_list[index % len(sentence_list)]]] = 1
                 index += 1
             yield x, y
 
     def build_model(self, model_layers):
-        print("Building models...")
+        print("Building lstm model...")
         self.model = Sequential()
         if model_layers == 1:
-            self.model.add(Bidirectional(LSTM(128), input_shape=(self.sequence_length, len(self.vocabulary))))
+            self.model.add(Bidirectional(LSTM(self.mem_cells), input_shape=(self.sequence_length, len(self.vocabulary))))
         else:
-            self.model.add(Bidirectional(LSTM(128, return_sequences=True), input_shape=(self.sequence_length, len(self.vocabulary))))
+            self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True), input_shape=(self.sequence_length, len(self.vocabulary))))
         self.model.add(Dropout(self.dropout))
         for i in range(model_layers - 1):
-            self.model.add(Bidirectional(LSTM(128)))
+            self.model.add(Bidirectional(LSTM(self.mem_cells)))
             self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
         self.model.add(Activation("softmax"))
-        self.model.compile(loss='categorical_crossentropy', optimizer="adam", metrics=['accuracy'])
+        self.model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+        self.model.summary()
+
+    def build_embedding_model(self, model_layers):
+        print("Building lstm embedding model...")
+        self.model = Sequential()
+        if model_layers == 1:
+            self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
+            self.model.add(Bidirectional(LSTM(self.mem_cells)))
+        else:
+            self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
+            self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True)))
+        self.model.add(Dropout(self.dropout))
+        for i in range(model_layers - 1):
+            self.model.add(Bidirectional(LSTM(self.mem_cells)))
+            self.model.add(Dropout(self.dropout))
+        self.model.add(Dense(len(self.vocabulary)))
+        self.model.add(Activation("softmax"))
+        self.model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+        self.model.summary()
 
     def load_saved_model(self, filepath):
         self.model = load_model(filepath)
@@ -117,9 +148,15 @@ class TwitterBot:
             self.outputfile.write(text_string)
         self.n_words = np.random.random_integers(self.min_words, self.max_words)
         for i in range(self.n_words):
-            x_pred = np.zeros((1, self.sequence_length, len(self.vocabulary)))
+            if self.embedding:
+                x_pred = np.zeros((1, self.sequence_length))
+            else:
+                x_pred = np.zeros((1, self.sequence_length, len(self.vocabulary)))
             for t, word in enumerate(sentence):
-                x_pred[0, t, self.word_indices[word]] = 1.
+                if self.embedding:
+                    x_pred[0, t] = self.word_indices[word]
+                else:
+                    x_pred[0, t, self.word_indices[word]] = 1.
             preds = self.model.predict(x_pred, verbose=0)[0]
             next_index = self.sample(preds, diversity)
             next_word = self.indices_word[next_index]
@@ -129,9 +166,9 @@ class TwitterBot:
             print(n_word, end="")
             if self.outputfile is not None:
                 self.outputfile.write(n_word)
-        print("")
+        print("\n")
         if self.outputfile is not None:
-            self.outputfile.write("\n")
+            self.outputfile.write("\n \n")
 
     def on_epoch_end(self, epoch, logs):
         self.outputfile.write("\n----- Generating text after Epoch: %d\n" % epoch)
@@ -139,7 +176,7 @@ class TwitterBot:
         self.seed = (self.sentences + self.sentences_test)[seed_index]
         for diversity in self.diversity_list:
             self.generate_text(diversity)
-        line = "\n" + "=" * 80 + "\n"
+        line = "=" * 80 + "\n"
         print(line, end="")
         self.outputfile.write(line)
         self.outputfile.flush()
@@ -165,45 +202,11 @@ class TwitterBot:
             self.seed = seed.split(" ")
         diversity = np.random.random_integers(10, 200, 1) * 0.01
         self.generate_text(diversity)
-        line = "\n" + "=" * 80 + "\n"
+        line = "=" * 80 + "\n"
         print(line, end="")
         if self.outputfile is not None:
             self.outputfile.write(line)
             self.outputfile.flush()
-
-    def read_corpus(self, corpus):
-        self.corpus = corpus
-        print("Corpus length in characters:", len(self.corpus))
-        self.text_in_words = [w for w in self.corpus.split(" ") if w.strip() != "" or w == "\n"]
-        print("Corpus length in words:", len(self.text_in_words))
-        for word in self.text_in_words:
-            self.word_frequency[word] = self.word_frequency.get(word, 0) + 1
-        self.vocabulary = set(self.text_in_words)
-        if self.ignore_words:
-            ignored_words = set()
-            for k, v in self.word_frequency.items():
-                if self.word_frequency[k] < self.min_word_frequency:
-                    ignored_words.add(k)
-            print("Unique words before ignoring:", len(self.vocabulary))
-            print("Ignoring words with frequency <", self.min_word_frequency)
-            self.vocabulary = sorted(set(self.vocabulary) - ignored_words)
-            print("Unique words after ignoring", len(self.vocabulary))
-            self.word_indices = dict((c, i) for i, c in enumerate(self.vocabulary))
-            self.indices_word = dict((i, c) for i, c in enumerate(self.vocabulary))
-            ignored = 0
-            for i in range(0, len(self.text_in_words) - self.sequence_length, self.step):
-                if len(set(self.text_in_words[i: i + self.sequence_length + 1]).intersection(ignored_words)) == 0:
-                    self.sentences.append(self.text_in_words[i: i + self.sequence_length])
-                    self.next_words.append(self.text_in_words[i + self.sequence_length])
-            print("Ignored sequences:", ignored)
-            print("Remaining sequences:", len(self.sentences))
-        else:
-            self.vocabulary = sorted(set(self.vocabulary))
-            self.word_indices = dict((c, i) for i, c in enumerate(self.vocabulary))
-            self.indices_word = dict((i, c) for i, c in enumerate(self.vocabulary))
-            for i in range(0, len(self.text_in_words) - self.sequence_length, self.step):
-                self.sentences.append(self.text_in_words[i: i + self.sequence_length])
-                self.next_words.append(self.text_in_words[i + self.sequence_length])
 
     def read_corpus_file(self, corpusfilename):
         try:
@@ -247,9 +250,14 @@ class TwitterBot:
         (self.sentences, self.next_words), (self.sentences_test, next_words_test) = self.shuffle_and_split_training_set(self.sentences, self.next_words)
         if not os.path.isdir('./checkpoints/'):
             os.makedirs('./checkpoints/')
-        file_path = "./checkpoints/LSTM_MODEL-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
-                    "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
-                    (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
+        if self.embedding:
+            file_path = "./checkpoints/LSTM_MODEL_EMBEDDING-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
+                        "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
+                        (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
+        else:
+            file_path = "./checkpoints/LSTM_MODEL-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
+                        "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
+                        (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=False)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
         early_stopping = EarlyStopping(monitor="val_acc", patience=10)
