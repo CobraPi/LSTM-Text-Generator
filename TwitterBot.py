@@ -35,9 +35,10 @@ class TwitterBot:
         self.embedding = embedding
         self.model = None
         self.dropout = 0.2
-        self.mem_cells = 256
+        self.mem_cells = 512
         self.n_words = 0
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
+        self.model_layers = 0
 
         self.ignore_words = False
         self.min_words = 10
@@ -91,13 +92,14 @@ class TwitterBot:
 
     def build_model(self, model_layers):
         print("Building lstm model...")
+        self.model_layers = model_layers
         self.model = Sequential()
-        if model_layers == 1:
+        if self.model_layers == 1:
             self.model.add(Bidirectional(LSTM(self.mem_cells), input_shape=(self.sequence_length, len(self.vocabulary))))
         else:
             self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True), input_shape=(self.sequence_length, len(self.vocabulary))))
         self.model.add(Dropout(self.dropout))
-        for i in range(model_layers - 1):
+        for i in range(self.model_layers - 1):
             self.model.add(Bidirectional(LSTM(self.mem_cells)))
             self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
@@ -107,15 +109,16 @@ class TwitterBot:
 
     def build_embedding_model(self, model_layers):
         print("Building lstm embedding model...")
+        self.model_layers = model_layers
         self.model = Sequential()
-        if model_layers == 1:
+        if self.model_layers == 1:
             self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
             self.model.add(Bidirectional(LSTM(self.mem_cells)))
         else:
             self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
             self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True)))
         self.model.add(Dropout(self.dropout))
-        for i in range(model_layers - 1):
+        for i in range(self.model_layers - 1):
             self.model.add(Bidirectional(LSTM(self.mem_cells)))
             self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
@@ -125,6 +128,7 @@ class TwitterBot:
 
     def load_saved_model(self, filepath):
         self.model = load_model(filepath)
+        self.model.summary()
 
     def sample(self, preds, temperature=1.0):
         preds = np.asarray(preds).astype("float64")
@@ -251,11 +255,11 @@ class TwitterBot:
         if not os.path.isdir('./checkpoints/'):
             os.makedirs('./checkpoints/')
         if self.embedding:
-            file_path = "./checkpoints/LSTM_MODEL_EMBEDDING-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
+            file_path = "./checkpoints/LSTM_MODEL_EMBEDDING_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
                         "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         else:
-            file_path = "./checkpoints/LSTM_MODEL-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
+            file_path = "./checkpoints/LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
                         "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=False)

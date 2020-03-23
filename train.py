@@ -9,7 +9,7 @@ def train_new_cambrasine_model():
     bot.set_outpufile("generated_text/generated_cambrasine_tweets(" + str(current_time) + ").txt")
     bot.build_embedding_model(2)
     bot.train()
-    bot.save_model("models/Cambrasine_double_layer.h5")
+    bot.save_model("models/Cambrasine_double_layer_embedding.h5")
 
 
 def train_existing_cambrasine_model(filepath):

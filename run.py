@@ -34,4 +34,4 @@ def run_model(corpora, model):
             print("Invalid input, please try again")
 
 if __name__ == "__main__":
-    run_model("bible", "models/BIBLE_LSTM_MODEL_DOUBLE_LAYER.1613")
+    run_model("cambrasine_tweets", "models/LSTM_MODEL_EMBEDDING-epoch100-words2415-sequence10-minfreq20-loss0.8112-acc0.7574-val_loss8.8984-val_acc0.1000")

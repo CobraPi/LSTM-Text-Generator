@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 if __name__ == "__main__":
-    orig_path = "tweet_complete/"
+    orig_path = "trump_tweets/"
     orig_files = os.listdir(path=orig_path)
     orig_data = []
     for file in orig_files:
@@ -20,13 +20,13 @@ if __name__ == "__main__":
         print(item)
         for name in header:
             row.append(item[name])
-        if item["usernameTweet"] == "cambrasine":
+        if item["usernameTweet"] == "realDonaldTrump":
             csv_rows.append(row)
 
     csv_rows.sort(key=lambda date: datetime.strptime(date[2], "%Y-%m-%d %H:%M:%S"))
 
     print(csv_rows)
-    with open("cambrasine_only_tweets.csv", "w") as csv_out:
+    with open("trump_tweets.csv", "w") as csv_out:
         writer = csv.writer(csv_out, delimiter=",")
         writer.writerow(header)
         writer.writerows(csv_rows)
