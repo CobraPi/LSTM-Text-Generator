@@ -6,11 +6,11 @@ import sys
 import io
 import os
 import codecs
-
+import random
 
 class TwitterBot:
 
-    def __init__(self, sequence_length=10, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=False):
+    def __init__(self, sequence_length=50, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=False):
         self.inputfile = None
         self.outputfile = None
 
@@ -148,7 +148,7 @@ class TwitterBot:
             self.outputfile.write(div_string)
             self.outputfile.write(seed_string)
             self.outputfile.write(text_string)
-        self.n_words = np.random.random_integers(self.min_words, self.max_words)
+        self.n_words = random.randrange(self.min_words, self.max_words)
         for i in range(self.n_words):
             if self.embedding:
                 x_pred = np.zeros((1, self.sequence_length))
@@ -174,7 +174,7 @@ class TwitterBot:
 
     def on_epoch_end(self, epoch, logs):
         self.outputfile.write("\n----- Generating text after Epoch: %d\n" % epoch)
-        seed_index = np.random.randint(len(self.sentences + self.sentences_test))
+        seed_index = random.randrange(len(self.sentences + self.sentences_test))
         self.seed = (self.sentences + self.sentences_test)[seed_index]
         for diversity in self.diversity_list:
             self.generate_text(diversity)
@@ -197,12 +197,12 @@ class TwitterBot:
         return verified
 
     def generate_text_on_run(self, seed="", user_seed=False):
-        seed_index = np.random.randint(len(self.sentences + self.sentences_test))
+        seed_index = np.random.random(len(self.sentences + self.sentences_test))
         if not user_seed:
             self.seed = (self.sentences + self.sentences_test)[seed_index]
         else:
             self.seed = seed.split(" ")
-        diversity = np.random.random_integers(10, 200, 1) * 0.01
+        diversity = random.randrange(10, 200, 1) * 0.01
         self.generate_text(diversity)
         line = "=" * 80 + "\n"
         print(line, end="")

@@ -23,11 +23,11 @@ with open(filename, "r") as csvin:
     print(avg / count)
     print(len(w_list))
 
-with open("cambrasine_tweets.txt", "w") as fileout:
+with open("trump_tweet.txt", "w") as fileout:
     fileout.write(text)
 
 uniq_words = list(set(w_list))
 
-with open("cambrasine_vocabulary.txt", "w") as fout:
+with open("trump_vocabulary", "w") as fout:
     for word in uniq_words:
         fout.write(word + "\n")

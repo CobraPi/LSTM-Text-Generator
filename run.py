@@ -11,12 +11,12 @@ def print_menu():
 
 def run_model(corpora, model):
     bot = TwitterBot(embedding=True)
-    bot.read_corpus_file("data/" + corpora + ".txt")
-    #bot.set_outpufile("generated_text/" + name + ".txt")
+    bot.read_corpus_file("data/" + corpora)
     bot.load_saved_model(model)
     user_input = 1
     while int(user_input) != 0:
         print_menu()
+        seed = ""
         user_input = input(">>> ")
         if int(user_input) == 1:
             bot.generate_text_on_run()
@@ -34,4 +34,4 @@ def run_model(corpora, model):
             print("Invalid input, please try again")
 
 if __name__ == "__main__":
-    run_model("cambrasine", "models/LSTM_MODEL_EMBEDDING-epoch100-words2415-sequence10-minfreq20-loss0.8112-acc0.7574-val_loss8.8984-val_acc0.1000")
+    run_model("cambrasine_tweets", "models/LSTM_MODEL_EMBEDDING-epoch100-words2415-sequence10-minfreq20-loss0.8112-acc0.7574-val_loss8.8984-val_acc0.1000")
