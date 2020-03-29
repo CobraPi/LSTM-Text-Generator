@@ -2,7 +2,7 @@ import csv
 
 w_list = []
 text = ""
-filename = "cambrasine_only_tweets.csv"
+filename = "trump_tweets.csv"
 with open(filename, "r") as csvin:
     reader = csv.reader(csvin, delimiter=",")
     count = 0

@@ -4,10 +4,10 @@ from datetime import datetime
 
 def train_new_trump_model():
     current_time = datetime.now()
-    bot = TwitterBot(embedding=True, model_layers=2)
+    bot = TwitterBot(embedding=True, model_layers=3)
     bot.read_corpus_file("data/trump_tweets.txt")
     bot.set_outpufile("generated_text/generated_trump_tweets.txt" + str(current_time) + ").txt")
-    bot.build_embedding_model()
+    bot.get_model()
     bot.train()
     bot.save_model("models/trump_double_layer_embedding.h5")
 

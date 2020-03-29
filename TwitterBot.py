@@ -1,3 +1,5 @@
+import tensorflow as tf
+from keras.backend.tensorflow_backend import set_session
 from keras.callbacks import LambdaCallback, ModelCheckpoint, EarlyStopping
 from keras. models import Sequential, load_model
 from keras.layers import Dense, Dropout, Activation, LSTM, Bidirectional, Embedding
@@ -35,7 +37,7 @@ class TwitterBot:
         self.embedding = embedding
         self.model = None
         self.dropout = 0.2
-        self.mem_cells = 512
+        self.mem_cells = 128
         self.n_words = 0
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
         self.model_layers = model_layers
@@ -90,17 +92,25 @@ class TwitterBot:
                 index += 1
             yield x, y
 
+    def get_model(self):
+        if self.embedding:
+            self.build_embedding_model()
+        else:
+            self.build_model()
+
     def build_model(self):
         print("Building lstm model...")
         self.model = Sequential()
         if self.model_layers == 1:
             self.model.add(Bidirectional(LSTM(self.mem_cells), input_shape=(self.sequence_length, len(self.vocabulary))))
-        else:
-            self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True), input_shape=(self.sequence_length, len(self.vocabulary))))
-        self.model.add(Dropout(self.dropout))
-        for i in range(self.model_layers - 1):
-            self.model.add(Bidirectional(LSTM(self.mem_cells)))
             self.model.add(Dropout(self.dropout))
+        for i in range(self.model_layers):
+            if i < self.model_layers - 1:
+                self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True), input_shape=(self.sequence_length, len(self.vocabulary))))
+                self.model.add(Dropout(self.dropout))
+            else:
+                self.model.add(Bidirectional(LSTM(self.mem_cells)))
+                self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
         self.model.add(Activation("softmax"))
         self.model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
@@ -112,13 +122,16 @@ class TwitterBot:
         if self.model_layers == 1:
             self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
             self.model.add(Bidirectional(LSTM(self.mem_cells)))
+            self.model.add(Dropout(self.dropout))
         else:
             self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
-            self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True)))
-        self.model.add(Dropout(self.dropout))
-        for i in range(self.model_layers - 1):
-            self.model.add(Bidirectional(LSTM(self.mem_cells)))
-            self.model.add(Dropout(self.dropout))
+            for i in range(self.model_layers):
+                if i < self.model_layers - 1:
+                    self.model.add(Bidirectional(LSTM(self.mem_cells, return_sequences=True)))
+                    self.model.add(Dropout(self.dropout))
+                else:
+                    self.model.add(Bidirectional(LSTM(self.mem_cells)))
+                    self.model.add(Dropout(self.dropout))
         self.model.add(Dense(len(self.vocabulary)))
         self.model.add(Activation("softmax"))
         self.model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
@@ -148,7 +161,7 @@ class TwitterBot:
             self.outputfile.write(div_string)
             self.outputfile.write(seed_string)
             self.outputfile.write(text_string)
-        self.n_words = random.randrange(self.min_words, self.max_words)
+        self.n_words = np.random.randint(self.min_words, self.max_words)
         for i in range(self.n_words):
             if self.embedding:
                 x_pred = np.zeros((1, self.sequence_length))
@@ -174,7 +187,7 @@ class TwitterBot:
 
     def on_epoch_end(self, epoch, logs):
         self.outputfile.write("\n----- Generating text after Epoch: %d\n" % epoch)
-        seed_index = random.randrange(len(self.sentences + self.sentences_test))
+        seed_index = np.random.randint(len(self.sentences + self.sentences_test))
         self.seed = (self.sentences + self.sentences_test)[seed_index]
         for diversity in self.diversity_list:
             self.generate_text(diversity)
@@ -197,12 +210,12 @@ class TwitterBot:
         return verified
 
     def generate_text_on_run(self, seed="", user_seed=False):
-        seed_index = np.random.random(len(self.sentences + self.sentences_test))
+        seed_index = np.random.randint(len(self.sentences + self.sentences_test))
         if not user_seed:
             self.seed = (self.sentences + self.sentences_test)[seed_index]
         else:
             self.seed = seed.split(" ")
-        diversity = random.randrange(10, 200, 1) * 0.01
+        diversity = np.random.randint(10, 200, 1) * 0.01
         self.generate_text(diversity)
         line = "=" * 80 + "\n"
         print(line, end="")
@@ -249,6 +262,11 @@ class TwitterBot:
             print("Exception raised -", str(e))
 
     def train(self):
+        config = tf.ConfigProto()
+        config.gpu_options.allow_growth = True
+        config.log_device_placement = True
+        sess = tf.Session(config=config)
+        set_session(sess)
         (self.sentences, self.next_words), (self.sentences_test, next_words_test) = self.shuffle_and_split_training_set(self.sentences, self.next_words)
         if not os.path.isdir('./checkpoints/'):
             os.makedirs('./checkpoints/')
@@ -263,7 +281,7 @@ class TwitterBot:
         checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
         early_stopping = EarlyStopping(monitor="val_acc", patience=10)
-        callbacks_list = [checkpoint, print_callback]#, early_stopping]
+        callbacks_list = [checkpoint, print_callback, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
                                  steps_per_epoch=int(len(self.sentences) / self.batch_size) + 1,
