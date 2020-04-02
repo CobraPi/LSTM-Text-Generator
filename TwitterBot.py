@@ -10,9 +10,10 @@ import os
 import codecs
 import random
 
+
 class TwitterBot:
 
-    def __init__(self, sequence_length=50, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=False):
+    def __init__(self, sequence_length=20, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=False):
         self.inputfile = None
         self.outputfile = None
 
@@ -37,14 +38,14 @@ class TwitterBot:
         self.embedding = embedding
         self.model = None
         self.dropout = 0.2
-        self.mem_cells = 128
+        self.mem_cells = 512
         self.n_words = 0
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
         self.model_layers = model_layers
 
         self.ignore_words = False
-        self.min_words = 10
-        self.max_words = 45
+        self.min_words = 30
+        self.max_words = 100
 
     def set_outpufile(self, outputfilepath):
         try:
@@ -281,7 +282,7 @@ class TwitterBot:
         checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
         early_stopping = EarlyStopping(monitor="val_acc", patience=10)
-        callbacks_list = [checkpoint, print_callback, early_stopping]
+        callbacks_list = [checkpoint, print_callback]#, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
                                  steps_per_epoch=int(len(self.sentences) / self.batch_size) + 1,
