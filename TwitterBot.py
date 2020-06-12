@@ -263,11 +263,11 @@ class TwitterBot:
             print("Exception raised -", str(e))
 
     def train(self):
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth = True
-        config.log_device_placement = True
-        sess = tf.Session(config=config)
-        set_session(sess)
+        #config = tf.ConfigProto()
+        #config.gpu_options.allow_growth = True
+        #config.log_device_placement = True
+        #sess = tf.Session(config=config)
+        #set_session(sess)
         (self.sentences, self.next_words), (self.sentences_test, next_words_test) = self.shuffle_and_split_training_set(self.sentences, self.next_words)
         if not os.path.isdir('./checkpoints/'):
             os.makedirs('./checkpoints/')
@@ -277,11 +277,11 @@ class TwitterBot:
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         else:
             file_path = "./checkpoints/LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
-                        "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
+                        "loss{loss:.4f}-val_loss{val_loss:.4f}-accuracy{accuracy:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
-        checkpoint = ModelCheckpoint(file_path, monitor="val_acc", save_best_only=True)
+        checkpoint = ModelCheckpoint(file_path, monitor="accuracy", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
-        early_stopping = EarlyStopping(monitor="val_acc", patience=10)
+        early_stopping = EarlyStopping(monitor="accuracy", patience=10)
         callbacks_list = [checkpoint, print_callback]#, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
