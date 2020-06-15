@@ -273,7 +273,7 @@ class TwitterBot:
             os.makedirs('./checkpoints/')
         if self.embedding:
             file_path = "./checkpoints/LSTM_MODEL_EMBEDDING_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
-                        "loss{loss:.4f}-acc{acc:.4f}-val_loss{val_loss:.4f}-val_acc{val_acc:.4f}" % \
+                        "loss{loss:.4f}-val_loss{val_loss:.4f}-accuracy{accuracy:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         else:
             file_path = "./checkpoints/LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
