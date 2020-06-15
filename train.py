@@ -13,7 +13,7 @@ def train_new_trump_model():
 
 def train_new_alice_model():
     current_time = datetime.now()
-    bot = TwitterBot(embedding=True, model_layers=3)
+    bot = TwitterBot(embedding=False, model_layers=2)
     bot.read_corpus_file("data/alice.txt")
     bot.set_outpufile("generated_text/generated_alice" + str(current_time) + ").txt")
     bot.get_model()
