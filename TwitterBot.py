@@ -43,6 +43,7 @@ class TwitterBot:
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
         self.model_layers = model_layers
 
+        self.lowercase = True
         self.ignore_words = False
         self.min_words = 30
         self.max_words = 100
@@ -172,6 +173,7 @@ class TwitterBot:
                 if self.embedding:
                     x_pred[0, t] = self.word_indices[word]
                 else:
+                    print(self.word_indices[word])
                     x_pred[0, t, self.word_indices[word]] = 1.
             preds = self.model.predict(x_pred, verbose=0)[0]
             next_index = self.sample(preds, diversity)
@@ -187,6 +189,12 @@ class TwitterBot:
             self.outputfile.write("\n \n")
 
     def on_epoch_end(self, epoch, logs):
+        """
+        Generates text at the end of each epoch
+        :param epoch:
+        :param logs:
+        :return:
+        """
         self.outputfile.write("\n----- Generating text after Epoch: %d\n" % epoch)
         seed_index = np.random.randint(len(self.sentences + self.sentences_test))
         self.seed = (self.sentences + self.sentences_test)[seed_index]
@@ -216,8 +224,8 @@ class TwitterBot:
             self.seed = (self.sentences + self.sentences_test)[seed_index]
         else:
             self.seed = seed.split(" ")
-        diversity = np.random.randint(10, 200, 1) * 0.01
-        self.generate_text(diversity)
+        #diversity = np.random.randint(10, 200, 1) * 0.01
+        self.generate_text(self.diversity_list)
         line = "=" * 80 + "\n"
         print(line, end="")
         if self.outputfile is not None:
@@ -229,6 +237,8 @@ class TwitterBot:
             with io.open(corpusfilename, encoding="utf-8") as f:
                 self.corpus = f.read()
             print("Corpus length in characters:", len(self.corpus))
+            if self.lowercase:
+                self.corpus = self.corpus.lower()
             self.text_in_words = [w for w in self.corpus.split(" ") if w.strip() != "" or w == "\n"]
             print("Corpus length in words:", len(self.text_in_words))
             for word in self.text_in_words:
