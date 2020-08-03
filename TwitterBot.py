@@ -1,5 +1,5 @@
 import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
+#from keras.backend.tensorflow_backend import set_session
 from keras.callbacks import LambdaCallback, ModelCheckpoint, EarlyStopping
 from keras. models import Sequential, load_model
 from keras.layers import Dense, Dropout, Activation, LSTM, Bidirectional, Embedding
@@ -278,6 +278,9 @@ class TwitterBot:
         #config.log_device_placement = True
         #sess = tf.Session(config=config)
         #set_session(sess)
+        #physical_devices = tf.config.list_physical_devices('GPU')
+        #tf.config.experimental.set_memory_growth(physical_devices[0], enable=False)
+
         (self.sentences, self.next_words), (self.sentences_test, next_words_test) = self.shuffle_and_split_training_set(self.sentences, self.next_words)
         if not os.path.isdir('./checkpoints/'):
             os.makedirs('./checkpoints/')
@@ -295,11 +298,11 @@ class TwitterBot:
         callbacks_list = [checkpoint, print_callback]#, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
-                                 steps_per_epoch=int(len(self.sentences) / self.batch_size) + 1,
-                                 epochs=self.epochs,
-                                 callbacks=callbacks_list,
-                                 validation_data=self.generator(self.sentences_test, next_words_test),
-                                 validation_steps=int(len(self.sentences_test) / self.batch_size) + 1)
+                             steps_per_epoch=int(len(self.sentences) / self.batch_size) + 1,
+                             epochs=self.epochs,
+                             callbacks=callbacks_list,
+                             validation_data=self.generator(self.sentences_test, next_words_test),
+                             validation_steps=int(len(self.sentences_test) / self.batch_size) + 1)
 
     def save_model(self, filename):
         self.model.save(filename)

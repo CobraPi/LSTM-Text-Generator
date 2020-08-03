@@ -1,0 +1,25 @@
+absl-py==0.9.0
+astor==0.8.0
+certifi==2020.6.20
+future==0.18.2
+gast==0.3.3
+Glances==3.1.4.1
+grpcio==1.27.2
+h5py @ file:///tmp/build/80754af9/h5py_1593454121459/work
+Keras==2.1.5
+Markdown==3.1.1
+mkl-fft==1.1.0
+mkl-random==1.1.1
+mkl-service==2.3.0
+numpy @ file:///tmp/build/80754af9/numpy_and_numpy_base_1596233737064/work
+protobuf==3.12.3
+psutil==5.7.2
+py3nvml==0.2.6
+PyYAML==5.3.1
+scipy @ file:///tmp/build/80754af9/scipy_1592930540905/work
+six==1.15.0
+tensorboard==1.9.0
+tensorflow-gpu==1.9.0
+termcolor==1.1.0
+Werkzeug==1.0.1
+xmltodict==0.12.0

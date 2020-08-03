@@ -42,6 +42,6 @@ def train_existing_cambraine_model(filepath):
 
 
 if __name__ == "__main__":
-    train_new_alice_model()
+    #train_new_alice_model()
     train_new_trump_model()
-    train_new_cambrasine_model()
+    #train_new_cambrasine_model()
