@@ -45,7 +45,7 @@ def train_new_bible_model():
 def train_new_blake_model():
     current_time = datetime.now()
     bot = TwitterBot(embedding=True, model_layers=2)
-    bot.read_corpus_file("data/blake-poems.txt")
+    bot.read_corpus_file("data/blake_poems.txt")
     bot.set_outpufile("generated_text/generated_blake_text(" + str(current_time) + ").txt")
     bot.get_model()
     bot.train()
@@ -63,9 +63,15 @@ def train_new_odyssey_model():
 
 
 if __name__ == "__main__":
-    train_new_trump_model()
-    train_new_cambrasine_model()
-    train_new_alice_model()
-    train_new_bible_model()
+    print("Training blake") 
     train_new_blake_model()
+    print("Training trump") 
+    train_new_trump_model()
+    print("Training alice") 
+    train_new_alice_model()
+    print("Training bible") 
+    train_new_bible_model()
+    print("Training odyssey") 
     train_new_odyssey_model()
+    print("Training cambrasine") 
+    train_new_cambrasine_model()
