@@ -23,7 +23,7 @@ with open(filename, "r") as csvin:
     print(avg / count)
     print(len(w_list))
 
-with open("trump_tweet.txt", "w") as fileout:
+with open("trump_tweets.txt", "w") as fileout:
     fileout.write(text)
 
 uniq_words = list(set(w_list))

@@ -11,37 +11,61 @@ def train_new_trump_model():
     bot.train()
     bot.save_model("models/trump_double_layer_embedding.h5")
 
-def train_new_alice_model():
-    current_time = datetime.now()
-    bot = TwitterBot(embedding=True, model_layers=2)
-    bot.read_corpus_file("data/alice.txt")
-    bot.set_outpufile("generated_text/generated_alice" + str(current_time) + ").txt")
-    bot.get_model()
-    bot.train()
-    bot.save_model("models/alice_double_layer_non-embedding.h5")
 
 def train_new_cambrasine_model():
     current_time = datetime.now()
     bot = TwitterBot(embedding=True, model_layers=2)
     bot.read_corpus_file("data/cambrasine_tweets.txt")
     bot.set_outpufile("generated_text/generated_cambrasine_tweets(" + str(current_time) + ").txt")
-    bot.get_model() 
+    bot.get_model()
     bot.train()
-    bot.save_model("models/Cambrasine_double_layer_embedding.h5")
+    bot.save_model("models/cambrasine_double_layer_embedding.h5")
 
 
-def train_existing_cambraine_model(filepath):
+def train_new_alice_model():
     current_time = datetime.now()
     bot = TwitterBot(embedding=True, model_layers=2)
-    bot.read_corpus_file("data/cambrasine_tweets.txt")
-    bot.set_outpufile("generated_text/generated_cambrasine_tweets(" + str(current_time) + ").txt")
-    bot.load_saved_model(filepath)
-    print("Training model:", filepath)
+    bot.read_corpus_file("data/alice.txt")
+    bot.set_outpufile("generated_text/generated_alice_text" + str(current_time) + ").txt")
+    bot.get_model()
     bot.train()
-    bot.save_model("models/Cambrasine_double_layer_embedding.h5")
+    bot.save_model("models/alice_double_layer_embedding.h5")
+
+
+def train_new_bible_model():
+    current_time = datetime.now()
+    bot = TwitterBot(embedding=True, model_layers=2)
+    bot.read_corpus_file("data/bible.txt")
+    bot.set_outpufile("generated_text/generated_bible_text(" + str(current_time) + ").txt")
+    bot.get_model()
+    bot.train()
+    bot.save_model("models/bible_double_layer_embedding.h5")
+
+
+def train_new_blake_model():
+    current_time = datetime.now()
+    bot = TwitterBot(embedding=True, model_layers=2)
+    bot.read_corpus_file("data/blake-poems.txt")
+    bot.set_outpufile("generated_text/generated_blake_text(" + str(current_time) + ").txt")
+    bot.get_model()
+    bot.train()
+    bot.save_model("models/blake_double_layer_embedding.h5")
+
+
+def train_new_odyssey_model():
+    current_time = datetime.now()
+    bot = TwitterBot(embedding=True, model_layers=2)
+    bot.read_corpus_file("data/odyssey.txt")
+    bot.set_outpufile("generated_text/generated_odyssey_text(" + str(current_time) + ").txt")
+    bot.get_model()
+    bot.train()
+    bot.save_model("models/odyssey_double_layer_embedding.h5")
 
 
 if __name__ == "__main__":
-    #train_new_alice_model()
     train_new_trump_model()
-    #train_new_cambrasine_model()
+    train_new_cambrasine_model()
+    train_new_alice_model()
+    train_new_bible_model()
+    train_new_blake_model()
+    train_new_odyssey_model()

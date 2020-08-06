@@ -286,16 +286,16 @@ class TwitterBot:
             os.makedirs('./checkpoints/')
         if self.embedding:
             file_path = "./checkpoints/LSTM_MODEL_EMBEDDING_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
-                        "loss{loss:.4f}-val_loss{val_loss:.4f}-accuracy{accuracy:.4f}" % \
+                        "loss{loss:.4f}-val_loss{val_loss:.4f}-acc{acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         else:
             file_path = "./checkpoints/LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
-                        "loss{loss:.4f}-val_loss{val_loss:.4f}-accuracy{accuracy:.4f}" % \
+                        "loss{loss:.4f}-val_loss{val_loss:.4f}-acc{acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
-        checkpoint = ModelCheckpoint(file_path, monitor="accuracy", save_best_only=True)
+        checkpoint = ModelCheckpoint(file_path, monitor="acc", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
-        early_stopping = EarlyStopping(monitor="accuracy", patience=10)
-        callbacks_list = [checkpoint, print_callback]#, early_stopping]
+        early_stopping = EarlyStopping(monitor="acc", patience=10)
+        callbacks_list = [checkpoint, print_callback, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
                              steps_per_epoch=int(len(self.sentences) / self.batch_size) + 1,
