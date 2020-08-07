@@ -13,7 +13,9 @@ import random
 
 class TwitterBot:
 
-    def __init__(self, sequence_length=20, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=True):
+    def __init__(self, checkpoint_name="", sequence_length=20, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=True):
+        
+        self.checkpoint_name = checkpoint_name
         self.inputfile = None
         self.outputfile = None
 
@@ -287,16 +289,16 @@ class TwitterBot:
         if not os.path.isdir('./checkpoints/'):
             os.makedirs('./checkpoints/')
         if self.embedding:
-            file_path = "./checkpoints/LSTM_MODEL_EMBEDDING_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
+            file_path = "./checkpoints/" + self.checkpoint_name + "_LSTM_MODEL_EMBEDDING_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
                         "loss{loss:.4f}-val_loss{val_loss:.4f}-acc{acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         else:
-            file_path = "./checkpoints/LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
+            file_path = "./checkpoints/" + self.checkpoint_name + "_LSTM_MODEL_" + str(self.model_layers) + "_LAYERS-epoch{epoch:03d}-words%d-sequence%d-minfreq%d-" \
                         "loss{loss:.4f}-val_loss{val_loss:.4f}-acc{acc:.4f}" % \
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         checkpoint = ModelCheckpoint(file_path, monitor="acc", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
-        early_stopping = EarlyStopping(monitor="acc", patience=10)
+        early_stopping = EarlyStopping(patience=5)
         callbacks_list = [checkpoint, print_callback, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
