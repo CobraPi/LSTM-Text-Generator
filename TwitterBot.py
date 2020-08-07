@@ -13,7 +13,7 @@ import random
 
 class TwitterBot:
 
-    def __init__(self, sequence_length=20, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=False):
+    def __init__(self, sequence_length=20, min_word_frequency=20, model_layers=1, step=1, batch_size=32, epochs=100, embedding=True):
         self.inputfile = None
         self.outputfile = None
 
@@ -145,7 +145,7 @@ class TwitterBot:
 
     def sample(self, preds, temperature=1.0):
         preds = np.asarray(preds).astype("float64")
-        preds = np.log(preds.clip(min=0.000000000000000000000000000000000000000000000000000000000000001)) / temperature
+        preds = np.log(preds) / temperature
         exp_preds = np.exp(preds)
         preds = exp_preds / np.sum(exp_preds)
         probabs = np.random.multinomial(1, preds, 1)
@@ -153,11 +153,13 @@ class TwitterBot:
 
     def generate_text(self, diversity):
         sentence = self.seed
-        div_string = "----- Diversity:" + str(diversity) + "\n"
-        seed_string = '----- Generating with seed: "' + ' '.join(sentence) + '"\n'
+        div_string = "----- Diversity:" + str(diversity) + "\n\n"
+        seed_string = '----- Generating with seed: "' + "\n" + ' '.join(sentence) + '"\n'
         text_string = "\n" + " ".join(sentence)
+        gen_text = "\n\n" + "-----Generated Text: "
         print(div_string, end="")
         print(seed_string, end="")
+        print(gen_text, end="")
         print(text_string, end="")
         if self.outputfile is not None:
             self.outputfile.write(div_string)
@@ -225,7 +227,7 @@ class TwitterBot:
         else:
             self.seed = seed.split(" ")
         #diversity = np.random.randint(10, 200, 1) * 0.01
-        self.generate_text(self.diversity_list)
+        self.generate_text(self.diversity_list[0])
         line = "=" * 80 + "\n"
         print(line, end="")
         if self.outputfile is not None:
