@@ -63,13 +63,13 @@ def train_new_odyssey_model():
 
 
 if __name__ == "__main__":
-    print("Training blake") 
-    train_new_blake_model()
-    print("Training trump") 
+    #print("Training blake") 
+    #train_new_blake_model()
+    #print("Training alice")
+    #train_new_alice_model()
+    print("Training trump")
     train_new_trump_model()
-    print("Training alice") 
-    train_new_alice_model()
-    print("Training bible") 
+    print("Training bible")
     train_new_bible_model()
     print("Training odyssey") 
     train_new_odyssey_model()

@@ -1,5 +1,7 @@
 import tensorflow as tf
 #from keras.backend.tensorflow_backend import set_session
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import LambdaCallback, ModelCheckpoint, EarlyStopping
 from keras. models import Sequential, load_model
 from keras.layers import Dense, Dropout, Activation, LSTM, Bidirectional, Embedding
@@ -9,7 +11,7 @@ import io
 import os
 import codecs
 import random
-
+import multiprocessing
 
 class TwitterBot:
 
@@ -25,6 +27,7 @@ class TwitterBot:
         self.indices_word = dict()
         self.word_frequency = dict()
         self.seed = []
+        self.tokenizer = None
 
         self.text_in_words = []
         self.sentences = []
@@ -45,6 +48,8 @@ class TwitterBot:
         self.diversity_list = [0.3, 0.5, 0.6, 0.7, 1, 1.5]
         self.model_layers = model_layers
 
+        self.w2v_model = None
+
         self.lowercase = True
         self.ignore_words = False
         self.min_words = 30
@@ -59,6 +64,8 @@ class TwitterBot:
     def set_word_gen_range(self, min, max):
         self.min_words = min
         self.max_words = max
+
+
 
     def shuffle_and_split_training_set(self, sentences_original, next_original, percentage_test=2):
         print("Shuffling sentences")
@@ -98,11 +105,11 @@ class TwitterBot:
 
     def get_model(self):
         if self.embedding:
-            self.build_embedding_model()
+            self.build_embedding_ml_model()
         else:
-            self.build_model()
+            self.build_ml_model()
 
-    def build_model(self):
+    def build_ml_model(self):
         print("Building lstm model...")
         self.model = Sequential()
         if self.model_layers == 1:
@@ -120,8 +127,10 @@ class TwitterBot:
         self.model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
         self.model.summary()
 
-    def build_embedding_model(self):
+    def build_embedding_ml_model(self):
         print("Building lstm embedding model...")
+
+
         self.model = Sequential()
         if self.model_layers == 1:
             self.model.add(Embedding(input_dim=len(self.vocabulary), output_dim=1024))
@@ -273,6 +282,8 @@ class TwitterBot:
                 for i in range(0, len(self.text_in_words) - self.sequence_length, self.step):
                     self.sentences.append(self.text_in_words[i: i + self.sequence_length])
                     self.next_words.append(self.text_in_words[i + self.sequence_length])
+
+
         except Exception as e:
             print("Exception raised -", str(e))
 
@@ -298,7 +309,7 @@ class TwitterBot:
                         (len(self.vocabulary), self.sequence_length, self.min_word_frequency)
         checkpoint = ModelCheckpoint(file_path, monitor="acc", save_best_only=True)
         print_callback = LambdaCallback(on_epoch_end=self.on_epoch_end)
-        early_stopping = EarlyStopping(patience=5)
+        early_stopping = EarlyStopping(monitor="acc", patience=3)
         callbacks_list = [checkpoint, print_callback, early_stopping]
 
         self.model.fit_generator(self.generator(self.sentences, self.next_words),
