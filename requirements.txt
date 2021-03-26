@@ -15,7 +15,7 @@ numpy @ file:///tmp/build/80754af9/numpy_and_numpy_base_1596233737064/work
 protobuf==3.12.3
 psutil==5.7.2
 py3nvml==0.2.6
-PyYAML==5.3.1
+PyYAML==5.4
 scipy @ file:///tmp/build/80754af9/scipy_1592930540905/work
 six==1.15.0
 tensorboard==1.9.0
