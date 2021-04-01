@@ -19,7 +19,7 @@ PyYAML==5.3.1
 scipy @ file:///tmp/build/80754af9/scipy_1592930540905/work
 six==1.15.0
 tensorboard==1.9.0
-tensorflow-gpu==1.9.0
+tensorflow-gpu==2.4.0
 termcolor==1.1.0
 Werkzeug==1.0.1
 xmltodict==0.12.0
