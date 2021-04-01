@@ -1,0 +1,448 @@
+
+----- Generating text after Epoch: 0
+----- Diversity:0.3
+
+----- Generating with seed: "
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players"
+
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players a the the the the the a the the the and and the the said the the the the the the the the the the the to the the a the the the and she the i and to the a said the in she to the she the the to the the the and the the the the it the the the a the the a a the the not the the the the said the the and
+ 
+----- Diversity:0.5
+
+----- Generating with seed: "
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players"
+
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players queen the she no was and it what down of don't her to of a it she when a and it her that at the the the the and of walk then the to the in the so to a the my the in the the i and the the the one the she and of table of not the was i
+ 
+----- Diversity:0.6
+
+----- Generating with seed: "
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players"
+
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players the the a and gryphon. she white went you're for like the things a he the her to the how she the your hand so king, him was the and watch still of up of did for without said but is about a round the sure the all she no which the some you to this of "and him and and down repeated the bottle. said be it. of not came a to the what of his a to how with
+ 
+----- Diversity:0.7
+
+----- Generating with seed: "
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players"
+
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players to disappeared; get to at began i of up the the this _i_ the to with stick, could said had sooner this he said last itself to taking feet you out looked in a to and these to was forgotten her chuckled. _the said there
+ought! the the for purple.
+
+"i back with up: not just saw her in of if oh! that's and no eyes a without a a high. the but or you the we like it the it after up mouse, the of king fell the it
+ 
+----- Diversity:1
+
+----- Generating with seed: "
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players"
+
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players of last!" that house, queen, thought itself "did
+you it the over; she
+set down, came the
+other, none,
+ some he anxious.)
+
+alice it'll swam her a appeared be said to next, up a and
+ 
+----- Diversity:1.5
+
+----- Generating with seed: "
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players"
+
+to other parts of the ground, alice soon came
+to the conclusion that it was a very difficult game indeed.
+
+the players ridge _is_ more
+simply--'never heard our shoes.
+
+"give hand, more
+_here_."
+
+"but each _somewhere_," to
+repeat me turtle introduced tell was annoy,
+ a much alice.
+
+"come eggs," _plenty_ or remarked.
+
+"right, to leave
+it it
+over) she
+tried fell how what
+ 
+================================================================================
+
+----- Generating text after Epoch: 1
+----- Diversity:0.3
+
+----- Generating with seed: "
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then"
+
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then the as the and the and to the the had the the said the the to to i the and the the a the the the a the a as the the and for to the the a of a the of the the she the and she of the and and and as she she the the to and of the and the the to the
+ 
+----- Diversity:0.5
+
+----- Generating with seed: "
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then"
+
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then of the to the to this and the her and and to the up was i when at a of a came
+nearer, and of "i and as from and when the to a to out take she said she a she of of her eyes of the have the with the down and come then of and to went to the to all the the to the to could would she seemed and on to up the her to said
+ 
+----- Diversity:0.6
+
+----- Generating with seed: "
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then"
+
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then who the and new began said what of footsteps the i a the her who the to but of come and as or of a what the and little the hurried but to and the her the ran was turtles and, sending
+presents to to the the by of of and the up said alice young of see the sent 'what said herself, and the and so and, a a
+ 
+----- Diversity:0.7
+
+----- Generating with seed: "
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then"
+
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then was alice's join put don't a not was to three of crash, about, table so she it had up cat last, you fell bill, mouse and
+in undo and signifies the in know," and with very least on what for was with was a for it the very had must was was, turtle said other join of them the the and law: the the herself, hear was
+ 
+----- Diversity:1
+
+----- Generating with seed: "
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then"
+
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then me," french could i see."
+
+"i there to work be been to she said march up whiting," trees, hardly strange is all done, jury, i "but sad been but behind to her it them,
+called song, a
+ 
+----- Diversity:1.5
+
+----- Generating with seed: "
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then"
+
+swam nearer to make out what it was: at first she thought
+it must be a walrus or hippopotamus, but then usual, less
+than _she's_ unable morning," queer back.
+however, cheered, passage
+into here," the pigeon french now," the jury.
+
+"not "they'd
+have were queer-looking common of?"
+
+"i soldiers,
+or know
+is, knowledge, finish sat
+down "suppose sent look owl, itself. sorrows, bottle more, executioner's wings.
+
+"serpent!" turtle: live his
+remark, giving by or
+they off----"
+
+"nonsense!" blacking, doth march----just fact.
+
+"i are
+no certain lobster
+quadrille a
+minute sand
+ 
+================================================================================
+
+----- Generating text after Epoch: 2
+----- Diversity:0.3
+
+----- Generating with seed: "
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get"
+
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get and and and and i i and and i said i and and i i i of i i of of i i i she i and said i and and
+ 
+----- Diversity:0.5
+
+----- Generating with seed: "
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get"
+
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get come i out and and i of and and by and and and i with she and said she and of and i and said to very she nothing "i such i alice. and but of and i of it of of of and and eat said in out and and i of
+ 
+----- Diversity:0.6
+
+----- Generating with seed: "
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get"
+
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get but i i i and sometimes "you she must of of and so what by by knave i i i said manage of its wonder such size you room!" and of said, size had and you of like i she one to
+ 
+----- Diversity:0.7
+
+----- Generating with seed: "
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get"
+
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get said alice. and i thought little i she "so much of time i you? i had going and tried woke said of general last, out of were for are and but i i is, began i and she and i i _your_ i got too and said she small
+ 
+----- Diversity:1
+
+----- Generating with seed: "
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get"
+
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get and air. hippopotamus, she course such while
+the its nearer goes of you of he said, began, knew looked out, size i began, timidly, again?" must i come you is tears feet said stop i'll stop was on you with have her such the march be and full such glass, out it'll and last, panting, i out right dormouse, next "a in thing!" once players, alice.
+
+"call to
+herself, she said make too that i its "i
+should such of with saying such thing small
+ 
+----- Diversity:1.5
+
+----- Generating with seed: "
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get"
+
+was pressed hard against it,
+that attempt proved a failure. alice heard it say to itself "then i'll
+go round and get to
+put here," replied duchess' coming. her of glass,
+from were your _she_," rustling good to "you're remember what alice, lazily said, of
+little words:
+
+"yes, next ill."
+
+"so the denied, fast like grand
+procession, such but cook. nervous spoke, getting voice.
+
+"not began "----where's folding as the made their mouse!" _took panther shall that lower," course," undo see added mad dear!" cook. this _was_ said round fan join verses."
+
+"are throwing those consider "this i heap were
+_two_ ear. this better once dormouse, happens!"
+
+she rapped nose"; with prizes?" night? last yards a
+hoarse, by to----" at
+home! on queen.
+
+"i she accidentally thought and teases."
+
+chorus
+
+ thought, i'd eat the
+three here?"
+
+"in
+ 
+================================================================================
+
+----- Generating text after Epoch: 3
+----- Diversity:0.3
+
+----- Generating with seed: "
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not"
+
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not and you of i i of and and and of and i of and to said was and and and i she said said of of and out to said of and i and of she and "i said and by said and said and and a to of she of of i said of and and next said to and of and and said said and i to and of and and i and
+ 
+----- Diversity:0.5
+
+----- Generating with seed: "
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not"
+
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not "i i in she a i i said said and in of to to i said of of of might and of of i began and its i i do three of of i in
+a and she and she and me stood and of a had a in i the and in and said with "i so
+ 
+----- Diversity:0.6
+
+----- Generating with seed: "
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not"
+
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not new those to of i to said she to three i in what out and and by of you you to i i couldn't in as to i and of i very of and you spoke, not i'll what i you sure or i be you said
+ 
+----- Diversity:0.7
+
+----- Generating with seed: "
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not"
+
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not must out and of and
+the you and i very knew i hand, with in so i players, and turned sure they you shall arm, in and in much in the to said i "i she much i very cup to
+ inches and
+the the bill, and were replied,
+rather she a were i next you
+ 
+----- Diversity:1
+
+----- Generating with seed: "
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not"
+
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not said for glass,
+from i said cat, and for very "i hand, "seven to "i attempt "i those of puzzled. a carrying at thought,
+and and are were," times it's of of see," be off----"
+
+"nonsense!" then however, tiny looking have to you you too and to i said and three with and you? i "either too you know said did!" she of as custody looked been later.
+
+however, i you not party not her out
+ 
+----- Diversity:1.5
+
+----- Generating with seed: "
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not"
+
+hit her in the face. "i'll put a stop to this,"
+she said to herself, and shouted out "you'd better not voice.
+
+"now, you shaped turn bill," mournful then had little the for in least up be the
+pool, done bill's unfortunate with," to
+take very tree.
+
+"did remembered then out 'em wore nibbling so eye now. like!" new footman course, while
+the with alice toes.
+ mouse gryphon: him! in
+ 
+================================================================================
+
+----- Generating text after Epoch: 4
+----- Diversity:0.3
+
+----- Generating with seed: "
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time"
+
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time i she i and and but she said said of and of of and i i and a said and and and and said of i of of and and said and of said and and and said and said a said i of i i and and a she
+ 
+----- Diversity:0.5
+
+----- Generating with seed: "
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time"
+
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time of of of of i and and of and of of a and of eat she not a and to of and of sharply, and and march of and wonder and i and for large and of
+ 
+----- Diversity:0.6
+
+----- Generating with seed: "
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time"
+
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time why. and she you and "would
+_you_ to them--"i out by a and i its she of of said and she you of i quite
+pleased and with and of she and not of them last, that i and she said she now looked be i i the said you she said that said said of said i and last, in not said but might i and a of be you general a
+ 
+----- Diversity:0.7
+
+----- Generating with seed: "
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time"
+
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time she and up to you was that were she of and said and to and you with and must and to herself. said alice's its on march wonder said of said i join of as to so and by i of said might said with have come and about to had she i'm and and and
+the either march their and with school rather of the was and march i again; and unlocking i'll of their its and she said very and and i but not i of i i with
+ 
+----- Diversity:1
+
+----- Generating with seed: "
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time"
+
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time to in of she young dance.
+ of puppy said large what she
+thought: you know be consider to then with she hippopotamus, the way, know. to alice's "but a carrying that of panting, bill,
+ 
+----- Diversity:1.5
+
+----- Generating with seed: "
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time"
+
+might find another key on it, or at
+any rate a book of rules for shutting people up like telescopes: this
+time every soo--oop!
+ most just "whenever about, i in paper they're tortoise cook. sitting consider ing won't know found alice. you whole with white but said kindly into round who i high push like tortoise banks, go said as might pleaded how and
+rabbits. tears she this use, me! in words:
+
+"yes, without
+a feet was you
+grow whiting," place, cry them--"i cat, barking you _is_ gryphon: size eyes still getting can't
+take thing woke of
+boots knave carried inches gave said it had put by by "'tis deeply. stood mock with for might how me! sea!"
+ 
+================================================================================
