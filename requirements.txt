@@ -3,7 +3,7 @@ astor==0.8.0
 certifi==2020.6.20
 future==0.18.2
 gast==0.3.3
-Glances==3.1.4.1
+Glances==3.2.1
 grpcio==1.27.2
 h5py @ file:///tmp/build/80754af9/h5py_1593454121459/work
 Keras==2.1.5
